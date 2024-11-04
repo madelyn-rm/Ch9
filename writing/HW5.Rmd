@@ -5,13 +5,36 @@ date: "2024-11-04"
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
 library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Load in the data:
 ```{r}
-homicides <- '/Users/madelynmaclaughlin/Downloads/R_class/Ch_9/data/homicides.csv'
+library(tidyverse)
+homicides <- read.csv('/Users/madelynmaclaughlin/Downloads/R_class/Ch_9/data/homicides.csv')
+head(homicides)
 ```
+
+I am creating the graph from choice 2. Let's try and reduce the data to what we need and organize it.
+```{r}
+homicides %>% 
+  select(reported_date, city) %>% 
+  filter(city == "Baltimore") %>% 
+  mutate(reported_date = ymd(reported_date)) %>% 
+  arrange(reported_date)
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
