@@ -1,0 +1,18 @@
+---
+title: "HW5"
+author: "Madelyn Maclaughlin"
+date: "2024-11-04"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load in the data:
+```{r}
+homicides <- '/Users/madelynmaclaughlin/Downloads/R_class/Ch_9/data/homicides.csv'
+```
+
+
