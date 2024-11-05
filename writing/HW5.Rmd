@@ -19,11 +19,17 @@ head(homicides)
 
 I am creating the graph from choice 2. Let's try and reduce the data to what we need and organize it.
 ```{r}
-homicides %>% 
+homicides_dates <- homicides %>% 
   select(reported_date, city) %>% 
   filter(city == "Baltimore") %>% 
   mutate(reported_date = ymd(reported_date)) %>% 
   arrange(reported_date)
+head(homicides_dates)
+```
+
+Sorting data into different groups based on season.
+```{r}
+
 ```
 
 
