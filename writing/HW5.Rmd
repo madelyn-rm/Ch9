@@ -29,7 +29,13 @@ head(homicides_dates)
 
 Sorting data into different groups based on season.
 ```{r}
+summer <- homicides_dates %>% 
+  mutate(month = month(reported_date)) %>% 
+  filter(month %in% c(6:11))
 
+winter <- homicides_dates %>% 
+  mutate(month = month(reported_date)) %>% 
+  filter(month %in% c(12:5))
 ```
 
 
