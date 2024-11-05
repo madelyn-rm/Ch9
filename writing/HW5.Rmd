@@ -31,13 +31,22 @@ Sorting data into different groups based on season.
 ```{r}
 summer <- homicides_dates %>% 
   mutate(month = month(reported_date)) %>% 
-  filter(month %in% c(6:11))
+  filter(month %in% c(6:11)) %>% 
+  group_by(reported_date)
 
 winter <- homicides_dates %>% 
   mutate(month = month(reported_date)) %>% 
-  filter(month %in% c(12:5))
+  filter(month %in% c(1:5, 12)) %>% 
+  group_by(reported_date)
 ```
 
+Begin graphing.
+```{r}
+ggplot() +
+  geom_histogram(summer, mapping = aes(x = reported_date), bins = 80, fill = "lightgray", color = "gray50") +
+  geom_histogram(winter, mapping = aes(x = reported_date), bins = 80, fill = "lightblue", color = "gray50") +
+  theme_dark()
+```
 
 
 
