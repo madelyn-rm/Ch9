@@ -30,22 +30,33 @@ head(homicides_dates)
 Sorting data into different groups based on season.
 ```{r}
 summer <- homicides_dates %>% 
-  mutate(month = month(reported_date)) %>% 
-  filter(month %in% c(6:11)) %>% 
-  group_by(reported_date)
+  mutate(months = month(reported_date, label = TRUE)) %>% 
+  filter(months %in% c("May", "Jun", "Jul", "Aug", "Sep", "Oct")) %>% 
+  group_by(months)
 
 winter <- homicides_dates %>% 
-  mutate(month = month(reported_date)) %>% 
-  filter(month %in% c(1:5, 12)) %>% 
-  group_by(reported_date)
+  mutate(months = month(reported_date, label = TRUE)) %>% 
+  filter(months %in% c("Nov", "Dec", "Jan", "Feb", "Mar", "Apr")) %>% 
+  group_by(months)
 ```
 
-Begin graphing.
+Create a dataset of frequency for the geom_smooth function
 ```{r}
+h_freq <- homicides_dates %>% 
+  mutate(month = round_date(reported_date, unit = "month")) %>% 
+  group_by(month) %>% 
+  count()
+```
+
+
+Begin graphing.
+```{r, fig.width = 7, fig.height = 2}
 ggplot() +
-  geom_histogram(summer, mapping = aes(x = reported_date), bins = 80, fill = "lightgray", color = "gray50") +
-  geom_histogram(winter, mapping = aes(x = reported_date), bins = 80, fill = "lightblue", color = "gray50") +
-  theme_dark()
+  geom_histogram(summer, mapping = aes(x = reported_date), bins = 100, fill = "lightgray", color = "gray50") +
+  geom_histogram(winter, mapping = aes(x = reported_date), bins = 100, fill = "lightblue", color = "gray50") +
+  # geom_smooth(h_freq, mapping =  aes(x = month, y = n), se = FALSE) +
+  theme_dark() +
+  labs(x = "Date", y = "Monthly Homicides", title = "Homicides in Baltimore, MD")
 ```
 
 
