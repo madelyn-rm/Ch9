@@ -50,13 +50,14 @@ h_freq <- homicides_dates %>%
 
 
 Begin graphing.
-```{r, fig.width = 7, fig.height = 2}
+```{r, fig.width = 7, fig.height = 2.2}
 ggplot() +
   geom_histogram(summer, mapping = aes(x = reported_date), bins = 100, fill = "lightgray", color = "gray50") +
   geom_histogram(winter, mapping = aes(x = reported_date), bins = 100, fill = "lightblue", color = "gray50") +
-  # geom_smooth(h_freq, mapping =  aes(x = month, y = n), se = FALSE) +
+  geom_smooth(h_freq, mapping =  aes(x = month, y = n), se = FALSE) +
   theme_dark() +
-  labs(x = "Date", y = "Monthly Homicides", title = "Homicides in Baltimore, MD")
+  labs(x = "Date", y = "Monthly Homicides", title = "Homicides in Baltimore, MD") +
+  scale_y_continuous(breaks = c(0, 10, 20, 30, 40))
 ```
 
 
