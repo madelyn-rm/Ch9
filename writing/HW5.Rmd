@@ -32,17 +32,20 @@ Sorting data into different groups based on season.
 summer <- homicides_dates %>% 
   mutate(months = month(reported_date, label = FALSE),
          years = year(reported_date)) %>% 
-  # filter(months %in% c("May", "Jun", "Jul", "Aug", "Sep", "Oct")) %>% 
+  filter(months %in% c(5, 6, 7, 8, 9, 10)) %>% 
   group_by(months, years) %>% 
   count() %>% 
-  mutate(total_date = paste(months, years, sep = ", ")) %>% 
+  mutate(total_date = paste(years, months, sep = "-")) %>% 
   mutate(total_date = ym(total_date))
   
-
 winter <- homicides_dates %>% 
-  mutate(months = month(reported_date, label = TRUE)) %>% 
-  filter(months %in% c("Nov", "Dec", "Jan", "Feb", "Mar", "Apr")) %>% 
-  group_by(months)
+  mutate(months = month(reported_date, label = FALSE),
+         years = year(reported_date)) %>% 
+  filter(months %in% c(11, 12, 1, 2, 3, 4)) %>% 
+  group_by(months, years) %>% 
+  count() %>% 
+  mutate(total_date = paste(years, months, sep = "-")) %>% 
+  mutate(total_date = ym(total_date))
 ```
 
 Create a dataset of frequency for the geom_smooth function
@@ -57,12 +60,14 @@ h_freq <- homicides_dates %>%
 Begin graphing.
 ```{r, fig.width = 7, fig.height = 2.2}
 ggplot() +
-  geom_bar(summer, mapping = aes(x = reported_date), fill = "lightgray", color = "gray50") +
-  geom_bar(winter, mapping = aes(x = reported_date), bins = 100, fill = "lightblue", color = "gray50") +
+  geom_col(summer, mapping = aes(x = total_date, y = n), fill = "lightgray", color = "gray50") +
+  geom_col(winter, mapping = aes(x = total_date, y = n), fill = "lightblue", color = "gray50") +
   geom_smooth(h_freq, mapping =  aes(x = month, y = n), se = FALSE, span = 0.1) +
   theme_dark() +
   labs(x = "Date", y = "Monthly Homicides", title = "Homicides in Baltimore, MD") +
-  scale_y_continuous(breaks = c(0, 10, 20, 30, 40))
+  scale_y_continuous(breaks = c(0, 10, 20, 30, 40)) +
+  geom_vline(xintercept = ymd("2015-04-12"), linewidth = 1.5, linetype = 8, color = "red") +
+  geom_text(aes(x = ymd("2015-01-01"), y = 37, label = "Arrest of\nFreddie Gray"), color = "white", hjust = 1) 
 ```
 
 
