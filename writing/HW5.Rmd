@@ -36,7 +36,8 @@ summer <- homicides_dates %>%
   group_by(months, years) %>% 
   count() %>% 
   mutate(total_date = paste(years, months, sep = "-")) %>% 
-  mutate(total_date = ym(total_date))
+  mutate(total_date = ym(total_date),
+         season = "summer")
   
 winter <- homicides_dates %>% 
   mutate(months = month(reported_date, label = FALSE),
@@ -45,7 +46,11 @@ winter <- homicides_dates %>%
   group_by(months, years) %>% 
   count() %>% 
   mutate(total_date = paste(years, months, sep = "-")) %>% 
-  mutate(total_date = ym(total_date))
+  mutate(total_date = ym(total_date),
+         season = "winter")
+
+w_and_s <- full_join(winter, summer, by = c("season", "total_date", "n", "years", "months")) %>% 
+  mutate(season = as_factor(season))
 ```
 
 Create a dataset of frequency for the geom_smooth function
@@ -60,8 +65,10 @@ h_freq <- homicides_dates %>%
 Begin graphing.
 ```{r, fig.width = 7, fig.height = 2.2}
 ggplot() +
-  geom_col(summer, mapping = aes(x = total_date, y = n), fill = "lightgray", color = "gray50") +
-  geom_col(winter, mapping = aes(x = total_date, y = n), fill = "lightblue", color = "gray50") +
+  geom_col(w_and_s, mapping = aes(x = total_date, y = n, fill = season), color = "gray50") +
+  # geom_col(summer, mapping = aes(x = total_date, y = n), fill = "lightgray", color = "gray50") +
+  # geom_col(winter, mapping = aes(x = total_date, y = n), fill = "lightblue", color = "gray50") +
+scale_fill_manual(values = c("winter" = "lightblue", "summer" = "lightgray")) +
   geom_smooth(h_freq, mapping =  aes(x = month, y = n), se = FALSE, span = 0.1) +
   theme_dark() +
   labs(x = "Date", y = "Monthly Homicides", title = "Homicides in Baltimore, MD") +
