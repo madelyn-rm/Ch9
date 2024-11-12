@@ -27,7 +27,7 @@ homicides_dates <- homicides %>%
 head(homicides_dates)
 ```
 
-Sorting data into different groups based on season.
+Sorting data into different groups based on season to add season labels to them, to separate them by color in the graph later. Then, I'm merging the two datasets into one so that I can graph everything all at once.
 ```{r}
 summer <- homicides_dates %>% 
   mutate(months = month(reported_date, label = FALSE),
@@ -53,7 +53,7 @@ w_and_s <- full_join(winter, summer, by = c("season", "total_date", "n", "years"
   mutate(season = as_factor(season))
 ```
 
-Create a dataset of frequency for the geom_smooth function
+Create a dataset of frequency for the geom_smooth function.
 ```{r}
 h_freq <- homicides_dates %>% 
   mutate(month = round_date(reported_date, unit = "month")) %>% 
