@@ -62,7 +62,11 @@ h_freq <- homicides_dates %>%
 ```
 
 
-Begin graphing.
+Begin graphing:
+- span = 0.1 to make the geom_smooth line wiggly
+- se = FALSE to remove error shadow
+- used the seasons which had been converted to factors in scale_fill_manual to apply fill colors based on factor levels
+- other code is mostly based on formatting axes, adding useful references, and working with the theme and legend.
 ```{r, fig.width = 7, fig.height = 2.5}
 ggplot() +
   geom_col(w_and_s, mapping = aes(x = total_date, y = n, fill = season), color = "gray50") +
@@ -73,7 +77,7 @@ scale_fill_manual(values = c("Winter" = "lightblue", "Summer" = "lightgray")) +
   scale_y_continuous(breaks = c(0, 10, 20, 30, 40)) +
   geom_vline(xintercept = ymd("2015-04-12"), linewidth = 1.5, linetype = 8, color = "red") +
   geom_text(aes(x = ymd("2015-01-01"), y = 37, label = "Arrest of\nFreddie Gray"), color = "white", hjust = 1) +
-  theme(legend.position = "bottom", legend.title = element_blank(), )
+  theme(legend.position = "bottom", legend.title = element_blank())
 ```
 
 
