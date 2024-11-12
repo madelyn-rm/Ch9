@@ -67,7 +67,7 @@ Begin graphing:
 - se = FALSE to remove error shadow
 - used the seasons which had been converted to factors in scale_fill_manual to apply fill colors based on factor levels
 - other code is mostly based on formatting axes, adding useful references, and working with the theme and legend.
-```{r, fig.width = 7, fig.height = 2.5}
+```{r, fig.width = 7, fig.height = 2.5, message = FALSE}
 ggplot() +
   geom_col(w_and_s, mapping = aes(x = total_date, y = n, fill = season), color = "gray50") +
 scale_fill_manual(values = c("Winter" = "lightblue", "Summer" = "lightgray")) +
