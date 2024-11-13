@@ -8,5 +8,7 @@ exercise, and the homework.
 # Homework
 
 My task was to recreate the following plot: 
+![example graph](/Users/madelynmaclaughlin/Downloads/example_graph.png)
 
 from the following dataset:
+[https://github.com/washingtonpost/data-homicides](https://github.com/washingtonpost/data-homicides)
