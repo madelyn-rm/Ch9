@@ -1,0 +1,84 @@
+---
+title: "Flexdashboard practice"
+author: "Madelyn Maclaughlin"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r, include = FALSE, message = FALSE}
+library(tidyverse)
+library(ggthemes)
+library(flexdashboard)
+library(DT)
+library(leaflet)
+ufos <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-06-25/ufo_sightings.csv")
+```
+
+```{r, include = FALSE}
+ufo_co <- ufos %>% 
+  mutate(date_time = mdy_hm(date_time),
+         sighting_year = year(date_time)) %>% 
+  filter(state == 'co')
+```
+
+
+Column {data-width=350}
+```{r}
+ufo_by_time <- ufo_co %>% 
+  mutate(year = year(date_time)) %>% 
+  group_by(year) %>% 
+  count()
+
+ggplot(ufo_by_time, aes(x = year, y = n)) +
+  geom_line() +
+  labs(title = "UFO Sightings in Colorado per Year", x = "Year", y = "Sighting Count") +
+  theme_few()
+```
+
+Column {data-width=650}
+```{r}
+pal <- colorQuantile("YlOrRd", NULL, n = 8)
+leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(-102.03,37,-109.03, 41) %>% 
+  addTiles() %>% 
+  addCircleMarkers(ufo_co$longitude, 
+                   ufo_co$latitude, 
+                   color = ufo_co$encounter_length, 
+                   radius = 5, 
+                   fill = T,
+                   fillOpacity = 0.2,
+                   opacity = 0.6,
+                   popup = paste(ufo_co$city_area,
+                                 ufo_co$sighting_year, 
+                                 sep = ",")) 
+```
+
+
+```{r}
+city_year <- ufo_co %>% 
+  select(city_area, sighting_year)
+
+datatable(city_year, colnames = c("Location", "Year"), 
+extensions = "Scroller", style="bootstrap", class="compact", 
+width="100%", options=list(deferRender=TRUE, scrollY=300, scroller=TRUE))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
